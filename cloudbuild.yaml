@@ -1,0 +1,45 @@
+steps:
+  # Step 1: Fetch Firebase credentials from Secret Manager
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - 'gcloud secrets versions access latest --secret=firebase-service-account > firebase-service-account.json'
+
+  # Step 2: Build Docker image WITH Firebase credentials available
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '--no-cache'
+      - '-t'
+      - 'asia-northeast1-docker.pkg.dev/ws-sg-asia-01/cloud-run-source-deploy/bowring-and-lady-cur-2kgs-3-24-hth'
+      - '.'
+
+  # Step 3: Push image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'asia-northeast1-docker.pkg.dev/ws-sg-asia-01/cloud-run-source-deploy/bowring-and-lady-cur-2kgs-3-24-hth'
+
+  # Step 4: Deploy pre-built image to Cloud Run
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'bowring-and-lady-cur-2kgs-3-24-hth'
+      - '--image'
+      - 'asia-northeast1-docker.pkg.dev/ws-sg-asia-01/cloud-run-source-deploy/bowring-and-lady-cur-2kgs-3-24-hth'
+      - '--region'
+      - 'asia-northeast1'
+      - '--allow-unauthenticated'
+      - '--port'
+      - '8080'
+      - '--memory'
+      - '1Gi'
+      - '--cpu'
+      - '1'
+      - '--set-secrets'
+      - 'GOOGLE_APPLICATION_CREDENTIALS=firebase-service-account:latest,AWS_ACCESS_KEY_ID=aws-access-key-id:latest,AWS_SECRET_ACCESS_KEY=aws-secret-access-key:latest,AWS_REGION=aws-region:latest,AWS_SES_FROM_EMAIL=aws-ses-from-email:latest'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
