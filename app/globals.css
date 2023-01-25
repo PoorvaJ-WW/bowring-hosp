@@ -1,0 +1,38 @@
+/* base-template/app/globals.css */
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    
+    /* Font family variables - dynamically set by ThemeContext from theme metadata */
+    --font-heading: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-nav-header: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-nav-footer: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+  }
+  
+  /* Apply fonts to elements */
+  body {
+    font-family: var(--font-body);
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+  
+  /* Navigation font classes */
+  .nav-header {
+    font-family: var(--font-nav-header);
+  }
+  
+  .nav-footer {
+    font-family: var(--font-nav-footer);
+  }
+}
