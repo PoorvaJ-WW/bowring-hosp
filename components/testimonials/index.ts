@@ -1,0 +1,13 @@
+export { default as TestimonialsOffWhiteGrid } from './TestimonialsOffWhiteGrid';
+export { default as TestimonialsLong } from './TestimonialsLong';
+export { default as TestimonialsBasicCard } from './TestimonialsBasicCard';
+export { default as TestimonialsOffWhiteGridHome } from './TestimonialsOffWhiteGridHome';
+export { default as TestimonialsLongHistoryAndHeritage } from './TestimonialsLongHistoryAndHeritage';
+export { default as TestimonialsBasicCardMedicalCollege } from './TestimonialsBasicCardMedicalCollege';
+export { default as TestimonialsOffWhiteGridBloodBank } from './TestimonialsOffWhiteGridBloodBank';
+export { default as TestimonialsOffWhiteGridForPatients } from './TestimonialsOffWhiteGridForPatients';
+export { default as TestimonialsBasicCardInpatientServices } from './TestimonialsBasicCardInpatientServices';
+export { default as TestimonialsLongMaternityAndChildcare } from './TestimonialsLongMaternityAndChildcare';
+export { default as TestimonialsBasicCardCareerOpportunities } from './TestimonialsBasicCardCareerOpportunities';
+export { default as TestimonialsOffWhiteGridInternationalPatients } from './TestimonialsOffWhiteGridInternationalPatients';
+export { default as TestimonialsLongPatientTestimonials } from './TestimonialsLongPatientTestimonials';
