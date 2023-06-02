@@ -1,0 +1,14 @@
+export { default as StatsSimpleInCard } from './StatsSimpleInCard';
+export { default as StatsWithDescription } from './StatsWithDescription';
+export { default as StatsSimpleInCardHome } from './StatsSimpleInCardHome';
+export { default as StatsWithDescriptionAbout } from './StatsWithDescriptionAbout';
+export { default as StatsSimpleInCardDepartmentsAndSpecialties } from './StatsSimpleInCardDepartmentsAndSpecialties';
+export { default as StatsWithDescriptionMedicalCollege } from './StatsWithDescriptionMedicalCollege';
+export { default as StatsSimpleInCardEmergencyServices } from './StatsSimpleInCardEmergencyServices';
+export { default as StatsWithDescriptionArtCentre } from './StatsWithDescriptionArtCentre';
+export { default as StatsSimpleInCardAdmissions } from './StatsSimpleInCardAdmissions';
+export { default as StatsWithDescriptionInfrastructure } from './StatsWithDescriptionInfrastructure';
+export { default as StatsSimpleInCardOutpatientServices } from './StatsSimpleInCardOutpatientServices';
+export { default as StatsWithDescriptionSurgicalServices } from './StatsWithDescriptionSurgicalServices';
+export { default as StatsSimpleInCardMaternityAndChildcare } from './StatsSimpleInCardMaternityAndChildcare';
+export { default as StatsSimpleInCardHealthCheckupPackages } from './StatsSimpleInCardHealthCheckupPackages';
