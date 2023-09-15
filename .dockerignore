@@ -1,0 +1,13 @@
+node_modules
+npm-debug.log
+README.md
+.git
+.env*
+!.env.production
+.vscode
+.idea
+coverage
+*.log
+.next
+# Allow firebase service account for build
+!firebase-service-account.json
