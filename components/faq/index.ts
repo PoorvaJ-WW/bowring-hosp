@@ -1,0 +1,12 @@
+export { default as FaqOffset } from './FaqOffset';
+export { default as FaqTwoColumnsCenter } from './FaqTwoColumnsCenter';
+export { default as FaqTwoColumns } from './FaqTwoColumns';
+export { default as FaqSideBySide } from './FaqSideBySide';
+export { default as FaqThreeColumnCenter } from './FaqThreeColumnCenter';
+export { default as FaqOffsetMedicalCollege } from './FaqOffsetMedicalCollege';
+export { default as FaqTwoColumnsCenterPatientCare } from './FaqTwoColumnsCenterPatientCare';
+export { default as FaqTwoColumnsAdmissions } from './FaqTwoColumnsAdmissions';
+export { default as FaqSideBySideForPatients } from './FaqSideBySideForPatients';
+export { default as FaqThreeColumnCenterForVisitors } from './FaqThreeColumnCenterForVisitors';
+export { default as FaqOffsetTelemedicine } from './FaqOffsetTelemedicine';
+export { default as FaqThreeColumnCenterAppointmentBooking } from './FaqThreeColumnCenterAppointmentBooking';
