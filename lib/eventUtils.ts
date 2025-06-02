@@ -87,3 +87,14 @@ export function getRelativeEventDate(eventDate: string): string {
   // For dates beyond a week, return the formatted date
   return formatEventDate(eventDate);
 }
+
+/**
+ * Sort events by date
+ */
+export function sortEventsByDate(events: Array<{ date?: string; eventDate?: string }>, order: 'asc' | 'desc' = 'asc'): Array<{ date?: string; eventDate?: string }> {
+  return [...events].sort((a, b) => {
+    const dateA = new Date(a.date || a.eventDate || 0).getTime();
+    const dateB = new Date(b.date || b.eventDate || 0).getTime();
+    return order === 'asc' ? dateA - dateB : dateB - dateA;
+  });
+}

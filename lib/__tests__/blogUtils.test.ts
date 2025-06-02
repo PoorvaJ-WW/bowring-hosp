@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { formatDate, generateExcerpt, generateBlogSlug, calculateBlogReadingTime } from '../blogUtils'
+import { formatDate, generateExcerpt, generateBlogSlug, calculateBlogReadingTime, isRecentPost } from '../blogUtils'
 
 describe('formatDate', () => {
   it('formats a valid date string', () => {
@@ -120,5 +120,34 @@ describe('calculateBlogReadingTime', () => {
     const words = Array(250).fill('word').join(' ')
     const result = calculateBlogReadingTime(words)
     expect(result.minutes).toBe(2)
+  })
+})
+
+describe('isRecentPost', () => {
+  it('returns false for empty date', () => {
+    expect(isRecentPost('')).toBe(false)
+  })
+
+  it('returns true for today', () => {
+    const today = new Date().toISOString()
+    expect(isRecentPost(today)).toBe(true)
+  })
+
+  it('returns true for post within threshold', () => {
+    const threeDaysAgo = new Date()
+    threeDaysAgo.setDate(threeDaysAgo.getDate() - 3)
+    expect(isRecentPost(threeDaysAgo.toISOString(), 7)).toBe(true)
+  })
+
+  it('returns false for post older than threshold', () => {
+    const tenDaysAgo = new Date()
+    tenDaysAgo.setDate(tenDaysAgo.getDate() - 10)
+    expect(isRecentPost(tenDaysAgo.toISOString(), 7)).toBe(false)
+  })
+
+  it('returns false for future dates', () => {
+    const tomorrow = new Date()
+    tomorrow.setDate(tomorrow.getDate() + 1)
+    expect(isRecentPost(tomorrow.toISOString())).toBe(false)
   })
 })
