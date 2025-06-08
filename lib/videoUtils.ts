@@ -250,3 +250,42 @@ export function groupVideosByCategory<T extends { categories?: string[]; categor
 
   return grouped;
 }
+
+/**
+ * Format duration in human-readable format (e.g., "1h 30m" or "45m 30s")
+ */
+export function formatDurationHuman(duration?: string): string {
+  if (!duration) return '';
+
+  // If duration is in seconds (numeric string)
+  if (/^\d+$/.test(duration)) {
+    const totalSeconds = parseInt(duration);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    if (hours > 0) {
+      return minutes > 0 ? `${hours}h ${minutes}m` : `${hours}h`;
+    }
+    if (minutes > 0) {
+      return seconds > 0 ? `${minutes}m ${seconds}s` : `${minutes}m`;
+    }
+    return `${seconds}s`;
+  }
+
+  // If already in HH:MM:SS or MM:SS format, convert to human readable
+  const parts = duration.split(':').map(Number);
+  if (parts.length === 3) {
+    const [hours, minutes, seconds] = parts;
+    if (hours > 0) {
+      return minutes > 0 ? `${hours}h ${minutes}m` : `${hours}h`;
+    }
+    return seconds > 0 ? `${minutes}m ${seconds}s` : `${minutes}m`;
+  }
+  if (parts.length === 2) {
+    const [minutes, seconds] = parts;
+    return seconds > 0 ? `${minutes}m ${seconds}s` : `${minutes}m`;
+  }
+
+  return duration;
+}

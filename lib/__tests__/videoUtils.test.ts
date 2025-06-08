@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import {
   formatDate,
   formatDuration,
+  formatDurationHuman,
   generateVideoSlug,
   getVideoSlug,
   extractVideoId,
@@ -311,5 +312,43 @@ describe('groupVideosByCategory', () => {
   it('adds uncategorized videos to Uncategorized', () => {
     const result = groupVideosByCategory(mockVideos)
     expect(result.get('Uncategorized')).toHaveLength(1)
+  })
+})
+
+describe('formatDurationHuman', () => {
+  it('returns empty string for undefined', () => {
+    expect(formatDurationHuman()).toBe('')
+  })
+
+  it('formats seconds only', () => {
+    expect(formatDurationHuman('45')).toBe('45s')
+  })
+
+  it('formats minutes and seconds', () => {
+    expect(formatDurationHuman('125')).toBe('2m 5s')
+  })
+
+  it('formats minutes without seconds', () => {
+    expect(formatDurationHuman('120')).toBe('2m')
+  })
+
+  it('formats hours and minutes', () => {
+    expect(formatDurationHuman('3720')).toBe('1h 2m')
+  })
+
+  it('formats hours without minutes', () => {
+    expect(formatDurationHuman('3600')).toBe('1h')
+  })
+
+  it('parses MM:SS format', () => {
+    expect(formatDurationHuman('10:30')).toBe('10m 30s')
+  })
+
+  it('parses HH:MM:SS format', () => {
+    expect(formatDurationHuman('1:30:00')).toBe('1h 30m')
+  })
+
+  it('returns original string for unknown format', () => {
+    expect(formatDurationHuman('invalid')).toBe('invalid')
   })
 })
