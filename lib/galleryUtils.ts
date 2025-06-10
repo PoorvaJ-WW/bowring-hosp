@@ -150,3 +150,33 @@ export function searchGalleryImages(images: any[], searchTerm: string): any[] {
     image.categories?.some((cat: string) => cat.toLowerCase().includes(searchLower))
   );
 }
+
+/**
+ * Get unique categories from gallery images
+ */
+export function getGalleryCategories(images: any[]): string[] {
+  const categories = new Set<string>();
+
+  images.forEach(image => {
+    if (image.categories) {
+      image.categories.forEach((cat: string) => categories.add(cat));
+    }
+  });
+
+  return Array.from(categories).sort();
+}
+
+/**
+ * Get unique tags from gallery images
+ */
+export function getGalleryTags(images: any[]): string[] {
+  const tags = new Set<string>();
+
+  images.forEach(image => {
+    if (image.tags) {
+      image.tags.forEach((tag: string) => tags.add(tag));
+    }
+  });
+
+  return Array.from(tags).sort();
+}
