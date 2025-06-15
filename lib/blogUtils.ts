@@ -55,3 +55,17 @@ export function calculateBlogReadingTime(content: string): { minutes: number; te
     text: minutes === 1 ? '1 min read' : `${minutes} min read`
   };
 }
+
+/**
+ * Check if blog post is recent (within last N days)
+ */
+export function isRecentPost(dateString: string, daysThreshold: number = 7): boolean {
+  if (!dateString) return false;
+
+  const postDate = new Date(dateString);
+  const now = new Date();
+  const diffTime = now.getTime() - postDate.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  return diffDays <= daysThreshold && diffDays >= 0;
+}
