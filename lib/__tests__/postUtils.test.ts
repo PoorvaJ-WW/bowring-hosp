@@ -2,7 +2,9 @@ import { describe, it, expect } from 'vitest'
 import {
   formatDate,
   generateExcerpt,
-  generatePostSlug
+  generatePostSlug,
+  getPostCategories,
+  filterPostsByCategory
 } from '../postUtils'
 
 describe('formatDate', () => {
@@ -94,5 +96,47 @@ describe('generatePostSlug', () => {
 
   it('handles apostrophes', () => {
     expect(generatePostSlug("John's Blog Post")).toBe('johns-blog-post')
+  })
+})
+
+describe('getPostCategories', () => {
+  const mockPosts = [
+    { id: '1', title: 'Post 1', categories: ['tech', 'news'] },
+    { id: '2', title: 'Post 2', categories: ['health', 'tech'] },
+    { id: '3', title: 'Post 3', categories: ['sports'] },
+    { id: '4', title: 'Post 4' },
+  ]
+
+  it('returns unique categories sorted alphabetically', () => {
+    const result = getPostCategories(mockPosts)
+    expect(result).toEqual(['health', 'news', 'sports', 'tech'])
+  })
+
+  it('returns empty array for posts without categories', () => {
+    const result = getPostCategories([{ id: '1' }, { id: '2' }])
+    expect(result).toEqual([])
+  })
+})
+
+describe('filterPostsByCategory', () => {
+  const mockPosts = [
+    { id: '1', title: 'Tech Post', categories: ['tech', 'news'] },
+    { id: '2', title: 'Health Post', categories: ['health'] },
+    { id: '3', title: 'Sports Post', categories: ['sports'] },
+  ]
+
+  it('returns all posts when category is empty', () => {
+    expect(filterPostsByCategory(mockPosts, '')).toEqual(mockPosts)
+  })
+
+  it('filters posts by category', () => {
+    const result = filterPostsByCategory(mockPosts, 'tech')
+    expect(result).toHaveLength(1)
+    expect(result[0].id).toBe('1')
+  })
+
+  it('returns empty array when no matches', () => {
+    const result = filterPostsByCategory(mockPosts, 'nonexistent')
+    expect(result).toHaveLength(0)
   })
 })
