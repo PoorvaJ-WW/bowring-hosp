@@ -332,3 +332,12 @@ export function trackVideoView(videoId: string, watchTime: number): { event: str
 export function calculateVideoEngagement(views: number, likes: number, avgWatchPercent: number): number {
   return Math.round((likes / (views || 1)) * avgWatchPercent);
 }
+
+export function generateVideoMetaDescription(title: string, duration?: string): string {
+  const durationText = duration ? ' (' + duration + ')' : '';
+  return 'Watch ' + title + durationText + ' - High quality video content';
+}
+
+export function generateVideoSchemaMarkup(video: { title: string; description?: string }): object {
+  return { '@context': 'https://schema.org', '@type': 'VideoObject', name: video.title, description: video.description };
+}

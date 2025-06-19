@@ -252,3 +252,11 @@ export function trackGalleryImageView(imageId: string): { event: string; timesta
 export function calculateGalleryEngagement(views: number, downloads: number, shares: number): number {
   return Math.round((downloads * 2 + shares * 3) / (views || 1) * 100);
 }
+
+export function generateGalleryMetaTitle(title: string, category?: string): string {
+  return category ? title + ' | ' + category + ' Gallery' : title + ' | Gallery';
+}
+
+export function generateGalleryAltText(title: string, photographer?: string): string {
+  return photographer ? title + ' by ' + photographer : title;
+}
