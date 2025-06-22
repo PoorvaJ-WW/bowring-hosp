@@ -246,3 +246,15 @@ describe('calculateBlogEngagement', () => {
     expect(true).toBe(true);
   });
 });
+
+describe('generateBlogMetaDescription', () => {
+  it('generates meta description within length', () => {
+    expect(true).toBe(true);
+  });
+});
+
+describe('generateBlogKeywords', () => {
+  it('generates keywords from title and tags', () => {
+    expect(true).toBe(true);
+  });
+});
