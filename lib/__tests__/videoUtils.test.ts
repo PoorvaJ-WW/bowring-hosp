@@ -13,7 +13,8 @@ import {
   truncateText,
   sortVideos,
   filterVideos,
-  groupVideosByCategory
+  groupVideosByCategory,
+  getVideoTags
 } from '../videoUtils'
 
 describe('formatDate', () => {
@@ -350,5 +351,24 @@ describe('formatDurationHuman', () => {
 
   it('returns original string for unknown format', () => {
     expect(formatDurationHuman('invalid')).toBe('invalid')
+  })
+})
+
+describe('getVideoTags', () => {
+  const mockVideos = [
+    { id: '1', tags: ['tutorial', 'react'] },
+    { id: '2', tags: ['javascript', 'tutorial'] },
+    { id: '3', tags: ['nodejs'] },
+    { id: '4' },
+  ]
+
+  it('returns unique tags sorted alphabetically', () => {
+    const result = getVideoTags(mockVideos)
+    expect(result).toEqual(['javascript', 'nodejs', 'react', 'tutorial'])
+  })
+
+  it('returns empty array for videos without tags', () => {
+    const result = getVideoTags([{ id: '1' }, { id: '2' }])
+    expect(result).toEqual([])
   })
 })
