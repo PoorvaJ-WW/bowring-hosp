@@ -8,7 +8,10 @@ import {
   sortGalleryImages,
   searchGalleryImages,
   getGalleryCategories,
-  getGalleryTags
+  getGalleryTags,
+  groupByYear,
+  getImageCountByCategory,
+  shuffleImages
 } from '../galleryUtils'
 
 describe('determineAspectRatio', () => {
@@ -220,5 +223,59 @@ describe('getGalleryTags', () => {
   it('returns empty array for images without tags', () => {
     const result = getGalleryTags([{ id: '1' }, { id: '2' }])
     expect(result).toEqual([])
+  })
+})
+
+describe('groupByYear', () => {
+  const mockImages = [
+    { id: '1', publishedAt: '2024-01-15' },
+    { id: '2', publishedAt: '2024-06-20' },
+    { id: '3', publishedAt: '2023-03-10' },
+  ]
+
+  it('groups images by year', () => {
+    const result = groupByYear(mockImages)
+    expect(result.get('2024')).toHaveLength(2)
+    expect(result.get('2023')).toHaveLength(1)
+  })
+
+  it('handles empty array', () => {
+    const result = groupByYear([])
+    expect(result.size).toBe(0)
+  })
+})
+
+describe('getImageCountByCategory', () => {
+  const mockImages = [
+    { id: '1', categories: ['nature', 'landscape'] },
+    { id: '2', categories: ['nature'] },
+    { id: '3', categories: ['portrait'] },
+  ]
+
+  it('counts images per category', () => {
+    const result = getImageCountByCategory(mockImages)
+    expect(result.get('nature')).toBe(2)
+    expect(result.get('landscape')).toBe(1)
+    expect(result.get('portrait')).toBe(1)
+  })
+})
+
+describe('shuffleImages', () => {
+  it('returns array of same length', () => {
+    const images = [{ id: '1' }, { id: '2' }, { id: '3' }]
+    expect(shuffleImages(images)).toHaveLength(3)
+  })
+
+  it('contains same elements', () => {
+    const images = [{ id: '1' }, { id: '2' }, { id: '3' }]
+    const shuffled = shuffleImages(images)
+    images.forEach(img => expect(shuffled).toContainEqual(img))
+  })
+
+  it('does not mutate original', () => {
+    const images = [{ id: '1' }, { id: '2' }]
+    const original = [...images]
+    shuffleImages(images)
+    expect(images).toEqual(original)
   })
 })
