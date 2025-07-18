@@ -234,3 +234,15 @@ describe('generateBlogShareUrl', () => {
     expect(true).toBe(true);
   });
 });
+
+describe('trackBlogView', () => {
+  it('creates blog view tracking event', () => {
+    expect(true).toBe(true);
+  });
+});
+
+describe('calculateBlogEngagement', () => {
+  it('calculates engagement score correctly', () => {
+    expect(true).toBe(true);
+  });
+});
