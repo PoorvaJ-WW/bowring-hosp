@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { formatDate, generateExcerpt, generateBlogSlug, calculateBlogReadingTime, isRecentPost } from '../blogUtils'
+import { formatDate, generateExcerpt, generateBlogSlug, calculateBlogReadingTime, isRecentPost, extractHashtags, getWordCount, getRelativeTime } from '../blogUtils'
 
 describe('formatDate', () => {
   it('formats a valid date string', () => {
@@ -149,5 +149,64 @@ describe('isRecentPost', () => {
     const tomorrow = new Date()
     tomorrow.setDate(tomorrow.getDate() + 1)
     expect(isRecentPost(tomorrow.toISOString())).toBe(false)
+  })
+})
+
+describe('extractHashtags', () => {
+  it('returns empty array for empty content', () => {
+    expect(extractHashtags('')).toEqual([])
+  })
+
+  it('extracts hashtags from content', () => {
+    expect(extractHashtags('Check out #react and #javascript')).toEqual(['#react', '#javascript'])
+  })
+
+  it('returns unique hashtags', () => {
+    expect(extractHashtags('#react #React #REACT')).toEqual(['#react'])
+  })
+
+  it('handles underscores in hashtags', () => {
+    expect(extractHashtags('#my_tag')).toEqual(['#my_tag'])
+  })
+})
+
+describe('getWordCount', () => {
+  it('returns 0 for empty content', () => {
+    expect(getWordCount('')).toBe(0)
+  })
+
+  it('counts words correctly', () => {
+    expect(getWordCount('Hello world')).toBe(2)
+  })
+
+  it('strips HTML before counting', () => {
+    expect(getWordCount('<p>Hello</p> <span>world</span>')).toBe(2)
+  })
+
+  it('handles multiple spaces', () => {
+    expect(getWordCount('hello    world')).toBe(2)
+  })
+})
+
+describe('getRelativeTime', () => {
+  it('returns empty string for empty input', () => {
+    expect(getRelativeTime('')).toBe('')
+  })
+
+  it('returns Just now for recent dates', () => {
+    const now = new Date().toISOString()
+    expect(getRelativeTime(now)).toBe('Just now')
+  })
+
+  it('returns days ago', () => {
+    const twoDaysAgo = new Date()
+    twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
+    expect(getRelativeTime(twoDaysAgo.toISOString())).toBe('2 days ago')
+  })
+
+  it('returns singular for 1 day', () => {
+    const yesterday = new Date()
+    yesterday.setDate(yesterday.getDate() - 1)
+    expect(getRelativeTime(yesterday.toISOString())).toBe('1 day ago')
   })
 })
