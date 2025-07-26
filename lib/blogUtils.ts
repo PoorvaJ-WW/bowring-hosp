@@ -135,3 +135,11 @@ export function generateBlogShareUrl(slug: string, platform: string): string {
   if (platform === 'facebook') return 'https://www.facebook.com/sharer/sharer.php?u=' + url;
   return url;
 }
+
+export function trackBlogView(postId: string, userId?: string): { event: string; timestamp: number; postId: string } {
+  return { event: 'blog_view', timestamp: Date.now(), postId };
+}
+
+export function calculateBlogEngagement(views: number, shares: number, comments: number): number {
+  return Math.round((shares * 2 + comments * 3) / (views || 1) * 100);
+}
