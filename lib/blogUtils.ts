@@ -154,3 +154,4 @@ export function generateBlogKeywords(title: string, tags: string[]): string {
   const titleWords = title.toLowerCase().split(/\s+/).filter(w => w.length > 3);
   return [...new Set([...titleWords, ...tags])].join(', ');
 }
+// Updated 2026-01-07
