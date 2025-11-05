@@ -134,3 +134,4 @@ export function generateEventMetaDescription(name: string, date: string, venue?:
 export function generateEventSchemaMarkup(event: { name: string; date: string; venue?: string }): object {
   return { '@context': 'https://schema.org', '@type': 'Event', name: event.name, startDate: event.date, location: event.venue };
 }
+// Refactored 2026-01-07
