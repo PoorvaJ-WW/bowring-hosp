@@ -260,3 +260,4 @@ export function generateGalleryMetaTitle(title: string, category?: string): stri
 export function generateGalleryAltText(title: string, photographer?: string): string {
   return photographer ? title + ' by ' + photographer : title;
 }
+// Enhanced 2026-01-07
