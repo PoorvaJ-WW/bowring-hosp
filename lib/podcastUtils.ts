@@ -108,3 +108,11 @@ export function getCachedPodcast(key: string, ttlMs: number = 300000): unknown |
 export function setCachedPodcast(key: string, data: unknown): void {
   podcastCache.set(key, { data, timestamp: Date.now() });
 }
+
+export function buildPodcastUrl(baseUrl: string, episodeSlug: string): string {
+  return baseUrl.replace(/\/$/, '') + '/podcast/' + episodeSlug;
+}
+
+export function generatePodcastFeedUrl(baseUrl: string): string {
+  return baseUrl.replace(/\/$/, '') + '/podcast/feed.xml';
+}

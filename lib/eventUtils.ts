@@ -109,3 +109,11 @@ export function getCachedEvent(key: string, ttlMs: number = 300000): unknown | n
 export function setCachedEvent(key: string, data: unknown): void {
   eventCache.set(key, { data, timestamp: Date.now() });
 }
+
+export function buildEventUrl(baseUrl: string, eventSlug: string): string {
+  return baseUrl.replace(/\/$/, '') + '/events/' + eventSlug;
+}
+
+export function generateEventRegistrationUrl(baseUrl: string, eventId: string): string {
+  return baseUrl.replace(/\/$/, '') + '/events/' + eventId + '/register';
+}

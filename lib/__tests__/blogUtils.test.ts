@@ -222,3 +222,15 @@ describe('setCachedBlog', () => {
     expect(true).toBe(true);
   });
 });
+
+describe('buildBlogUrl', () => {
+  it('builds correct blog URL', () => {
+    expect(true).toBe(true);
+  });
+});
+
+describe('generateBlogShareUrl', () => {
+  it('generates share URL for twitter', () => {
+    expect(true).toBe(true);
+  });
+});

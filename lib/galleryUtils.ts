@@ -236,3 +236,11 @@ export function getCachedGallery(key: string, ttlMs: number = 300000): unknown |
 export function setCachedGallery(key: string, data: unknown): void {
   galleryCache.set(key, { data, timestamp: Date.now() });
 }
+
+export function buildGalleryUrl(baseUrl: string, imageId: string): string {
+  return baseUrl.replace(/\/$/, '') + '/gallery/' + imageId;
+}
+
+export function generateGalleryDownloadUrl(imageUrl: string, filename: string): string {
+  return imageUrl + '?download=' + encodeURIComponent(filename);
+}

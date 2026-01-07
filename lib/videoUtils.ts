@@ -314,3 +314,13 @@ export function getCachedVideo(key: string, ttlMs: number = 300000): unknown | n
 export function setCachedVideo(key: string, data: unknown): void {
   videoCache.set(key, { data, timestamp: Date.now() });
 }
+
+export function buildVideoUrl(baseUrl: string, videoId: string): string {
+  return baseUrl.replace(/\/$/, '') + '/videos/' + videoId;
+}
+
+export function generateVideoEmbedCode(videoId: string, platform: string): string {
+  if (platform === 'youtube') return '<iframe src="https://www.youtube.com/embed/' + videoId + '"></iframe>';
+  if (platform === 'vimeo') return '<iframe src="https://player.vimeo.com/video/' + videoId + '"></iframe>';
+  return '';
+}
