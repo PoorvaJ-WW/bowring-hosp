@@ -34,3 +34,24 @@ export function generateBlogSlug(title: string): string {
     .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
     .trim();
 }
+
+/**
+ * Calculate estimated reading time for blog content
+ * Assumes average reading speed of 200 words per minute
+ */
+export function calculateBlogReadingTime(content: string): { minutes: number; text: string } {
+  if (!content) return { minutes: 0, text: '0 min read' };
+
+  // Remove HTML tags and count words
+  const text = content.replace(/<[^>]*>/g, '');
+  const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+  const wordCount = words.length;
+
+  // Calculate reading time (200 words per minute)
+  const minutes = Math.max(1, Math.ceil(wordCount / 200));
+
+  return {
+    minutes,
+    text: minutes === 1 ? '1 min read' : `${minutes} min read`
+  };
+}

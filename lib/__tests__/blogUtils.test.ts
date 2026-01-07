@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { formatDate, generateExcerpt, generateBlogSlug } from '../blogUtils'
+import { formatDate, generateExcerpt, generateBlogSlug, calculateBlogReadingTime } from '../blogUtils'
 
 describe('formatDate', () => {
   it('formats a valid date string', () => {
@@ -78,5 +78,47 @@ describe('generateBlogSlug', () => {
 
   it('preserves numbers', () => {
     expect(generateBlogSlug('Top 10 Tips')).toBe('top-10-tips')
+  })
+})
+
+describe('calculateBlogReadingTime', () => {
+  it('returns 0 min read for empty content', () => {
+    const result = calculateBlogReadingTime('')
+    expect(result.minutes).toBe(0)
+    expect(result.text).toBe('0 min read')
+  })
+
+  it('returns 1 min read for short content', () => {
+    const result = calculateBlogReadingTime('This is a short blog post.')
+    expect(result.minutes).toBe(1)
+    expect(result.text).toBe('1 min read')
+  })
+
+  it('calculates correct reading time for longer content', () => {
+    // 400 words should be 2 minutes
+    const words = Array(400).fill('word').join(' ')
+    const result = calculateBlogReadingTime(words)
+    expect(result.minutes).toBe(2)
+    expect(result.text).toBe('2 min read')
+  })
+
+  it('removes HTML tags before counting', () => {
+    const htmlContent = '<p>' + Array(200).fill('word').join(' ') + '</p>'
+    const result = calculateBlogReadingTime(htmlContent)
+    expect(result.minutes).toBe(1)
+  })
+
+  it('handles content with multiple HTML tags', () => {
+    const content = '<h1>Title</h1><p>Some <strong>bold</strong> text here.</p>'
+    const result = calculateBlogReadingTime(content)
+    expect(result.minutes).toBe(1)
+    expect(result.text).toBe('1 min read')
+  })
+
+  it('rounds up reading time', () => {
+    // 250 words = 1.25 minutes, should round to 2
+    const words = Array(250).fill('word').join(' ')
+    const result = calculateBlogReadingTime(words)
+    expect(result.minutes).toBe(2)
   })
 })
