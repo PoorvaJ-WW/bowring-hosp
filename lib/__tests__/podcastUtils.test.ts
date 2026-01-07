@@ -5,7 +5,8 @@ import {
   formatFileSize,
   formatPodcastDate,
   calculateTotalDuration,
-  getEpisodeCountText
+  getEpisodeCountText,
+  sortEpisodesByDate
 } from '../podcastUtils'
 
 describe('generatePodcastSlug', () => {
@@ -158,5 +159,46 @@ describe('getEpisodeCountText', () => {
   it('returns plural form for multiple', () => {
     expect(getEpisodeCountText(5)).toBe('5 episodes')
     expect(getEpisodeCountText(100)).toBe('100 episodes')
+  })
+})
+
+describe('sortEpisodesByDate', () => {
+  const mockEpisodes = [
+    { publishedAt: '2024-01-15', title: 'Episode 1' },
+    { publishedAt: '2024-03-20', title: 'Episode 3' },
+    { publishedAt: '2024-02-10', title: 'Episode 2' },
+  ]
+
+  it('sorts by newest first (default)', () => {
+    const result = sortEpisodesByDate(mockEpisodes)
+    expect(result[0].publishedAt).toBe('2024-03-20')
+    expect(result[1].publishedAt).toBe('2024-02-10')
+    expect(result[2].publishedAt).toBe('2024-01-15')
+  })
+
+  it('sorts by oldest first', () => {
+    const result = sortEpisodesByDate(mockEpisodes, 'oldest')
+    expect(result[0].publishedAt).toBe('2024-01-15')
+    expect(result[1].publishedAt).toBe('2024-02-10')
+    expect(result[2].publishedAt).toBe('2024-03-20')
+  })
+
+  it('handles date field fallback', () => {
+    const episodes = [
+      { date: '2024-01-01' },
+      { date: '2024-06-01' },
+    ]
+    const result = sortEpisodesByDate(episodes)
+    expect(result[0].date).toBe('2024-06-01')
+  })
+
+  it('does not mutate original array', () => {
+    const original = [...mockEpisodes]
+    sortEpisodesByDate(mockEpisodes)
+    expect(mockEpisodes).toEqual(original)
+  })
+
+  it('handles empty array', () => {
+    expect(sortEpisodesByDate([])).toEqual([])
   })
 })

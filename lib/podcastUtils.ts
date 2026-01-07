@@ -86,3 +86,14 @@ export function getEpisodeCountText(count: number): string {
   if (count === 1) return '1 episode';
   return `${count} episodes`;
 }
+
+/**
+ * Sort episodes by date
+ */
+export function sortEpisodesByDate(episodes: Array<{ publishedAt?: string; date?: string }>, order: 'newest' | 'oldest' = 'newest'): Array<{ publishedAt?: string; date?: string }> {
+  return [...episodes].sort((a, b) => {
+    const dateA = new Date(a.publishedAt || a.date || 0).getTime();
+    const dateB = new Date(b.publishedAt || b.date || 0).getTime();
+    return order === 'newest' ? dateB - dateA : dateA - dateB;
+  });
+}

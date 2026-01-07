@@ -289,3 +289,18 @@ export function formatDurationHuman(duration?: string): string {
 
   return duration;
 }
+
+/**
+ * Get unique video tags from a list of videos
+ */
+export function getVideoTags(videos: Array<{ tags?: string[] }>): string[] {
+  const tags = new Set<string>();
+
+  videos.forEach(video => {
+    if (video.tags) {
+      video.tags.forEach(tag => tags.add(tag));
+    }
+  });
+
+  return Array.from(tags).sort();
+}
