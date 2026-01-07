@@ -2,7 +2,10 @@ import { describe, it, expect } from 'vitest'
 import {
   generatePodcastSlug,
   formatDuration,
-  formatFileSize
+  formatFileSize,
+  formatPodcastDate,
+  calculateTotalDuration,
+  getEpisodeCountText
 } from '../podcastUtils'
 
 describe('generatePodcastSlug', () => {
@@ -90,5 +93,70 @@ describe('formatFileSize', () => {
 
   it('handles string input', () => {
     expect(formatFileSize('1024')).toBe('1.00 KB')
+  })
+})
+
+describe('formatPodcastDate', () => {
+  it('returns empty string for empty input', () => {
+    expect(formatPodcastDate('')).toBe('')
+  })
+
+  it('formats a valid date string', () => {
+    const result = formatPodcastDate('2024-01-15')
+    expect(result).toContain('January')
+    expect(result).toContain('15')
+    expect(result).toContain('2024')
+  })
+
+  it('formats ISO date string', () => {
+    const result = formatPodcastDate('2024-06-20T10:30:00Z')
+    expect(result).toContain('June')
+    expect(result).toContain('20')
+  })
+})
+
+describe('calculateTotalDuration', () => {
+  it('calculates total duration from episodes', () => {
+    const episodes = [
+      { duration: 120 },
+      { duration: 180 },
+      { duration: '60' },
+    ]
+    expect(calculateTotalDuration(episodes)).toBe('6:00')
+  })
+
+  it('returns 0:00 for empty array', () => {
+    expect(calculateTotalDuration([])).toBe('0:00')
+  })
+
+  it('ignores episodes without duration', () => {
+    const episodes = [
+      { duration: 120 },
+      { title: 'No duration' },
+    ]
+    expect(calculateTotalDuration(episodes)).toBe('2:00')
+  })
+
+  it('handles hours correctly', () => {
+    const episodes = [
+      { duration: 3600 },
+      { duration: 1800 },
+    ]
+    expect(calculateTotalDuration(episodes)).toBe('1:30:00')
+  })
+})
+
+describe('getEpisodeCountText', () => {
+  it('returns "No episodes" for 0', () => {
+    expect(getEpisodeCountText(0)).toBe('No episodes')
+  })
+
+  it('returns "1 episode" for 1', () => {
+    expect(getEpisodeCountText(1)).toBe('1 episode')
+  })
+
+  it('returns plural form for multiple', () => {
+    expect(getEpisodeCountText(5)).toBe('5 episodes')
+    expect(getEpisodeCountText(100)).toBe('100 episodes')
   })
 })
