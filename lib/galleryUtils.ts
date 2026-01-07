@@ -180,3 +180,49 @@ export function getGalleryTags(images: any[]): string[] {
 
   return Array.from(tags).sort();
 }
+
+/**
+ * Group gallery images by year
+ */
+export function groupByYear(images: any[]): Map<string, any[]> {
+  const grouped = new Map<string, any[]>();
+
+  images.forEach(image => {
+    const date = new Date(image.publishedAt || image.createdAt || Date.now());
+    const year = date.getFullYear().toString();
+    const existing = grouped.get(year) || [];
+    existing.push(image);
+    grouped.set(year, existing);
+  });
+
+  return grouped;
+}
+
+/**
+ * Get image count by category
+ */
+export function getImageCountByCategory(images: any[]): Map<string, number> {
+  const counts = new Map<string, number>();
+
+  images.forEach(image => {
+    if (image.categories) {
+      image.categories.forEach((cat: string) => {
+        counts.set(cat, (counts.get(cat) || 0) + 1);
+      });
+    }
+  });
+
+  return counts;
+}
+
+/**
+ * Shuffle gallery images
+ */
+export function shuffleImages<T>(images: T[]): T[] {
+  const shuffled = [...images];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
