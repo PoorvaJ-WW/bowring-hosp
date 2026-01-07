@@ -244,3 +244,11 @@ export function buildGalleryUrl(baseUrl: string, imageId: string): string {
 export function generateGalleryDownloadUrl(imageUrl: string, filename: string): string {
   return imageUrl + '?download=' + encodeURIComponent(filename);
 }
+
+export function trackGalleryImageView(imageId: string): { event: string; timestamp: number; imageId: string } {
+  return { event: 'gallery_view', timestamp: Date.now(), imageId };
+}
+
+export function calculateGalleryEngagement(views: number, downloads: number, shares: number): number {
+  return Math.round((downloads * 2 + shares * 3) / (views || 1) * 100);
+}

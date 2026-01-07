@@ -117,3 +117,11 @@ export function buildEventUrl(baseUrl: string, eventSlug: string): string {
 export function generateEventRegistrationUrl(baseUrl: string, eventId: string): string {
   return baseUrl.replace(/\/$/, '') + '/events/' + eventId + '/register';
 }
+
+export function trackEventRegistration(eventId: string, userId: string): { event: string; timestamp: number; eventId: string } {
+  return { event: 'event_registration', timestamp: Date.now(), eventId };
+}
+
+export function calculateEventAttendanceRate(registered: number, attended: number): number {
+  return registered > 0 ? Math.round((attended / registered) * 100) : 0;
+}

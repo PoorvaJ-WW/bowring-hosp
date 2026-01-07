@@ -324,3 +324,11 @@ export function generateVideoEmbedCode(videoId: string, platform: string): strin
   if (platform === 'vimeo') return '<iframe src="https://player.vimeo.com/video/' + videoId + '"></iframe>';
   return '';
 }
+
+export function trackVideoView(videoId: string, watchTime: number): { event: string; timestamp: number; videoId: string } {
+  return { event: 'video_view', timestamp: Date.now(), videoId };
+}
+
+export function calculateVideoEngagement(views: number, likes: number, avgWatchPercent: number): number {
+  return Math.round((likes / (views || 1)) * avgWatchPercent);
+}

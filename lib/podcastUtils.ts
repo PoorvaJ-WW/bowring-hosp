@@ -116,3 +116,11 @@ export function buildPodcastUrl(baseUrl: string, episodeSlug: string): string {
 export function generatePodcastFeedUrl(baseUrl: string): string {
   return baseUrl.replace(/\/$/, '') + '/podcast/feed.xml';
 }
+
+export function trackPodcastListen(episodeId: string, listenTime: number): { event: string; timestamp: number; episodeId: string } {
+  return { event: 'podcast_listen', timestamp: Date.now(), episodeId };
+}
+
+export function calculatePodcastCompletionRate(started: number, completed: number): number {
+  return started > 0 ? Math.round((completed / started) * 100) : 0;
+}
