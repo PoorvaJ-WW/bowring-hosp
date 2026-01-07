@@ -4,7 +4,8 @@ import {
   formatEventTime,
   generateEventSlug,
   getEventStatus,
-  getRelativeEventDate
+  getRelativeEventDate,
+  sortEventsByDate
 } from '../eventUtils'
 
 describe('formatEventDate', () => {
@@ -149,5 +150,43 @@ describe('getRelativeEventDate', () => {
     farFuture.setDate(farFuture.getDate() + 30)
     const result = getRelativeEventDate(farFuture.toISOString())
     expect(result).toContain(farFuture.getFullYear().toString())
+  })
+})
+
+describe('sortEventsByDate', () => {
+  const mockEvents = [
+    { id: '1', date: '2024-03-15' },
+    { id: '2', date: '2024-01-10' },
+    { id: '3', date: '2024-06-20' },
+  ]
+
+  it('sorts events in ascending order by default', () => {
+    const result = sortEventsByDate(mockEvents)
+    expect(result[0].id).toBe('2')
+    expect(result[1].id).toBe('1')
+    expect(result[2].id).toBe('3')
+  })
+
+  it('sorts events in descending order', () => {
+    const result = sortEventsByDate(mockEvents, 'desc')
+    expect(result[0].id).toBe('3')
+    expect(result[1].id).toBe('1')
+    expect(result[2].id).toBe('2')
+  })
+
+  it('does not mutate original array', () => {
+    const original = [...mockEvents]
+    sortEventsByDate(mockEvents, 'asc')
+    expect(mockEvents).toEqual(original)
+  })
+
+  it('handles eventDate property', () => {
+    const events = [
+      { id: '1', eventDate: '2024-03-15' },
+      { id: '2', eventDate: '2024-01-10' },
+    ]
+    const result = sortEventsByDate(events)
+    expect(result[0].id).toBe('2')
+    expect(result[1].id).toBe('1')
   })
 })
