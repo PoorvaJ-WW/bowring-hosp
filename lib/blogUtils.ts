@@ -69,3 +69,47 @@ export function isRecentPost(dateString: string, daysThreshold: number = 7): boo
 
   return diffDays <= daysThreshold && diffDays >= 0;
 }
+
+/**
+ * Extract hashtags from blog content
+ */
+export function extractHashtags(content: string): string[] {
+  if (!content) return [];
+  const matches = content.match(/#[a-zA-Z0-9_]+/g);
+  return matches ? [...new Set(matches.map(tag => tag.toLowerCase()))] : [];
+}
+
+/**
+ * Calculate word count from blog content
+ */
+export function getWordCount(content: string): number {
+  if (!content) return 0;
+  const text = content.replace(/<[^>]*>/g, '');
+  return text.trim().split(/\s+/).filter(word => word.length > 0).length;
+}
+
+/**
+ * Get relative time string (e.g., "2 days ago")
+ */
+export function getRelativeTime(dateString: string): string {
+  if (!dateString) return '';
+
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffSecs = Math.floor(diffMs / 1000);
+  const diffMins = Math.floor(diffSecs / 60);
+  const diffHours = Math.floor(diffMins / 60);
+  const diffDays = Math.floor(diffHours / 24);
+  const diffWeeks = Math.floor(diffDays / 7);
+  const diffMonths = Math.floor(diffDays / 30);
+  const diffYears = Math.floor(diffDays / 365);
+
+  if (diffYears > 0) return `${diffYears} year${diffYears > 1 ? 's' : ''} ago`;
+  if (diffMonths > 0) return `${diffMonths} month${diffMonths > 1 ? 's' : ''} ago`;
+  if (diffWeeks > 0) return `${diffWeeks} week${diffWeeks > 1 ? 's' : ''} ago`;
+  if (diffDays > 0) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+  if (diffHours > 0) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+  if (diffMins > 0) return `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`;
+  return 'Just now';
+}
