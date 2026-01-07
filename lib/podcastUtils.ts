@@ -124,3 +124,12 @@ export function trackPodcastListen(episodeId: string, listenTime: number): { eve
 export function calculatePodcastCompletionRate(started: number, completed: number): number {
   return started > 0 ? Math.round((completed / started) * 100) : 0;
 }
+
+export function generatePodcastMetaDescription(title: string, episode: number, season?: number): string {
+  const episodeText = season ? 'S' + season + 'E' + episode : 'Episode ' + episode;
+  return title + ' - ' + episodeText;
+}
+
+export function generatePodcastSchemaMarkup(podcast: { title: string; episode: number }): object {
+  return { '@context': 'https://schema.org', '@type': 'PodcastEpisode', name: podcast.title, episodeNumber: podcast.episode };
+}

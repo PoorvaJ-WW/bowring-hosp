@@ -125,3 +125,12 @@ export function trackEventRegistration(eventId: string, userId: string): { event
 export function calculateEventAttendanceRate(registered: number, attended: number): number {
   return registered > 0 ? Math.round((attended / registered) * 100) : 0;
 }
+
+export function generateEventMetaDescription(name: string, date: string, venue?: string): string {
+  const venueText = venue ? ' at ' + venue : '';
+  return name + venueText + ' on ' + new Date(date).toLocaleDateString();
+}
+
+export function generateEventSchemaMarkup(event: { name: string; date: string; venue?: string }): object {
+  return { '@context': 'https://schema.org', '@type': 'Event', name: event.name, startDate: event.date, location: event.venue };
+}

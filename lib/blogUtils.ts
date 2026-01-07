@@ -143,3 +143,14 @@ export function trackBlogView(postId: string, userId?: string): { event: string;
 export function calculateBlogEngagement(views: number, shares: number, comments: number): number {
   return Math.round((shares * 2 + comments * 3) / (views || 1) * 100);
 }
+
+export function generateBlogMetaDescription(content: string, maxLength: number = 160): string {
+  const text = content.replace(/<[^>]*>/g, '').trim();
+  if (text.length <= maxLength) return text;
+  return text.substring(0, maxLength - 3) + '...';
+}
+
+export function generateBlogKeywords(title: string, tags: string[]): string {
+  const titleWords = title.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+  return [...new Set([...titleWords, ...tags])].join(', ');
+}
