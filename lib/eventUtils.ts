@@ -98,3 +98,14 @@ export function sortEventsByDate(events: Array<{ date?: string; eventDate?: stri
     return order === 'asc' ? dateA - dateB : dateB - dateA;
   });
 }
+
+const eventCache = new Map<string, { data: unknown; timestamp: number }>();
+export function getCachedEvent(key: string, ttlMs: number = 300000): unknown | null {
+  const cached = eventCache.get(key);
+  if (cached && Date.now() - cached.timestamp < ttlMs) return cached.data;
+  return null;
+}
+
+export function setCachedEvent(key: string, data: unknown): void {
+  eventCache.set(key, { data, timestamp: Date.now() });
+}

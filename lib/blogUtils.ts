@@ -113,3 +113,14 @@ export function getRelativeTime(dateString: string): string {
   if (diffMins > 0) return `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`;
   return 'Just now';
 }
+
+const blogCache = new Map<string, { data: unknown; timestamp: number }>();
+export function getCachedBlog(key: string, ttlMs: number = 300000): unknown | null {
+  const cached = blogCache.get(key);
+  if (cached && Date.now() - cached.timestamp < ttlMs) return cached.data;
+  return null;
+}
+
+export function setCachedBlog(key: string, data: unknown): void {
+  blogCache.set(key, { data, timestamp: Date.now() });
+}
