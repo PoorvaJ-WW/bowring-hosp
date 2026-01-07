@@ -226,3 +226,13 @@ export function shuffleImages<T>(images: T[]): T[] {
   }
   return shuffled;
 }
+const galleryCache = new Map<string, { data: unknown; timestamp: number }>();
+export function getCachedGallery(key: string, ttlMs: number = 300000): unknown | null {
+  const cached = galleryCache.get(key);
+  if (cached && Date.now() - cached.timestamp < ttlMs) return cached.data;
+  return null;
+}
+
+export function setCachedGallery(key: string, data: unknown): void {
+  galleryCache.set(key, { data, timestamp: Date.now() });
+}

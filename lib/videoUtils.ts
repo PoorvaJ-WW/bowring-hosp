@@ -304,3 +304,13 @@ export function getVideoTags(videos: Array<{ tags?: string[] }>): string[] {
 
   return Array.from(tags).sort();
 }
+const videoCache = new Map<string, { data: unknown; timestamp: number }>();
+export function getCachedVideo(key: string, ttlMs: number = 300000): unknown | null {
+  const cached = videoCache.get(key);
+  if (cached && Date.now() - cached.timestamp < ttlMs) return cached.data;
+  return null;
+}
+
+export function setCachedVideo(key: string, data: unknown): void {
+  videoCache.set(key, { data, timestamp: Date.now() });
+}

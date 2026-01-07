@@ -97,3 +97,14 @@ export function sortEpisodesByDate(episodes: Array<{ publishedAt?: string; date?
     return order === 'newest' ? dateB - dateA : dateA - dateB;
   });
 }
+
+const podcastCache = new Map<string, { data: unknown; timestamp: number }>();
+export function getCachedPodcast(key: string, ttlMs: number = 300000): unknown | null {
+  const cached = podcastCache.get(key);
+  if (cached && Date.now() - cached.timestamp < ttlMs) return cached.data;
+  return null;
+}
+
+export function setCachedPodcast(key: string, data: unknown): void {
+  podcastCache.set(key, { data, timestamp: Date.now() });
+}
