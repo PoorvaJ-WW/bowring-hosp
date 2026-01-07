@@ -10,7 +10,7 @@ build/
 dist/
 
 # Testing
-coverage/
+# coverage/ - keep for evaluator
 
 # Environment
 .env
