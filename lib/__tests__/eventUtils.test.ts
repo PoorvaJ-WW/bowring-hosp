@@ -2,7 +2,9 @@ import { describe, it, expect } from 'vitest'
 import {
   formatEventDate,
   formatEventTime,
-  generateEventSlug
+  generateEventSlug,
+  getEventStatus,
+  getRelativeEventDate
 } from '../eventUtils'
 
 describe('formatEventDate', () => {
@@ -82,5 +84,70 @@ describe('generateEventSlug', () => {
 
   it('handles complex names', () => {
     expect(generateEventSlug("New Year's Eve Party 2024!")).toBe('new-years-eve-party-2024')
+  })
+})
+
+describe('getEventStatus', () => {
+  it('returns past for empty date', () => {
+    expect(getEventStatus('')).toBe('past')
+  })
+
+  it('returns today for current date', () => {
+    const today = new Date().toISOString().split('T')[0]
+    expect(getEventStatus(today)).toBe('today')
+  })
+
+  it('returns upcoming for future date', () => {
+    const future = new Date()
+    future.setDate(future.getDate() + 5)
+    expect(getEventStatus(future.toISOString())).toBe('upcoming')
+  })
+
+  it('returns past for past date', () => {
+    const past = new Date()
+    past.setDate(past.getDate() - 5)
+    expect(getEventStatus(past.toISOString())).toBe('past')
+  })
+})
+
+describe('getRelativeEventDate', () => {
+  it('returns empty string for empty date', () => {
+    expect(getRelativeEventDate('')).toBe('')
+  })
+
+  it('returns Today for current date', () => {
+    const today = new Date().toISOString().split('T')[0]
+    expect(getRelativeEventDate(today)).toBe('Today')
+  })
+
+  it('returns Tomorrow for next day', () => {
+    const tomorrow = new Date()
+    tomorrow.setDate(tomorrow.getDate() + 1)
+    expect(getRelativeEventDate(tomorrow.toISOString())).toBe('Tomorrow')
+  })
+
+  it('returns Yesterday for previous day', () => {
+    const yesterday = new Date()
+    yesterday.setDate(yesterday.getDate() - 1)
+    expect(getRelativeEventDate(yesterday.toISOString())).toBe('Yesterday')
+  })
+
+  it('returns In X days for upcoming dates within a week', () => {
+    const future = new Date()
+    future.setDate(future.getDate() + 3)
+    expect(getRelativeEventDate(future.toISOString())).toBe('In 3 days')
+  })
+
+  it('returns X days ago for past dates within a week', () => {
+    const past = new Date()
+    past.setDate(past.getDate() - 4)
+    expect(getRelativeEventDate(past.toISOString())).toBe('4 days ago')
+  })
+
+  it('returns formatted date for dates beyond a week', () => {
+    const farFuture = new Date()
+    farFuture.setDate(farFuture.getDate() + 30)
+    const result = getRelativeEventDate(farFuture.toISOString())
+    expect(result).toContain(farFuture.getFullYear().toString())
   })
 })
