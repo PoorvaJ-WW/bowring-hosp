@@ -124,3 +124,14 @@ export function getCachedBlog(key: string, ttlMs: number = 300000): unknown | nu
 export function setCachedBlog(key: string, data: unknown): void {
   blogCache.set(key, { data, timestamp: Date.now() });
 }
+
+export function buildBlogUrl(baseUrl: string, slug: string): string {
+  return baseUrl.replace(/\/$/, '') + '/blog/' + slug;
+}
+
+export function generateBlogShareUrl(slug: string, platform: string): string {
+  const url = encodeURIComponent('https://example.com/blog/' + slug);
+  if (platform === 'twitter') return 'https://twitter.com/intent/tweet?url=' + url;
+  if (platform === 'facebook') return 'https://www.facebook.com/sharer/sharer.php?u=' + url;
+  return url;
+}
