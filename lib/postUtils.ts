@@ -56,3 +56,29 @@ export function transformToPostItems(posts: any[]): any[] {
     ...post // Spread remaining fields
   }));
 }
+
+/**
+ * Get unique categories from posts
+ */
+export function getPostCategories(posts: any[]): string[] {
+  const categories = new Set<string>();
+
+  posts.forEach(post => {
+    if (post.categories) {
+      post.categories.forEach((cat: string) => categories.add(cat));
+    }
+  });
+
+  return Array.from(categories).sort();
+}
+
+/**
+ * Filter posts by category
+ */
+export function filterPostsByCategory(posts: any[], category: string): any[] {
+  if (!category) return posts;
+
+  return posts.filter(post =>
+    post.categories?.includes(category)
+  );
+}

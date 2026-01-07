@@ -45,3 +45,44 @@ export function formatFileSize(bytes: number | string): string {
 
   return `${(size / Math.pow(1024, i)).toFixed(2)} ${units[i]}`;
 }
+
+/**
+ * Format podcast date for display
+ */
+export function formatPodcastDate(dateString: string): string {
+  if (!dateString) return '';
+
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+}
+
+/**
+ * Calculate total duration from array of episodes
+ */
+export function calculateTotalDuration(episodes: Array<{ duration?: number | string }>): string {
+  let totalSeconds = 0;
+
+  episodes.forEach(episode => {
+    if (episode.duration) {
+      const sec = typeof episode.duration === 'string'
+        ? parseInt(episode.duration)
+        : episode.duration;
+      if (!isNaN(sec)) totalSeconds += sec;
+    }
+  });
+
+  return formatDuration(totalSeconds);
+}
+
+/**
+ * Get episode count text
+ */
+export function getEpisodeCountText(count: number): string {
+  if (count === 0) return 'No episodes';
+  if (count === 1) return '1 episode';
+  return `${count} episodes`;
+}

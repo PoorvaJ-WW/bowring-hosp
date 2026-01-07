@@ -6,7 +6,9 @@ import {
   generateGallerySlug,
   filterByCategories,
   sortGalleryImages,
-  searchGalleryImages
+  searchGalleryImages,
+  getGalleryCategories,
+  getGalleryTags
 } from '../galleryUtils'
 
 describe('determineAspectRatio', () => {
@@ -180,5 +182,43 @@ describe('searchGalleryImages', () => {
   it('returns empty array when no matches', () => {
     const result = searchGalleryImages(mockImages, 'nonexistent')
     expect(result).toHaveLength(0)
+  })
+})
+
+describe('getGalleryCategories', () => {
+  const mockImages = [
+    { id: '1', categories: ['nature', 'outdoor'] },
+    { id: '2', categories: ['urban', 'nature'] },
+    { id: '3', categories: ['portrait'] },
+    { id: '4' },
+  ]
+
+  it('returns unique categories sorted alphabetically', () => {
+    const result = getGalleryCategories(mockImages)
+    expect(result).toEqual(['nature', 'outdoor', 'portrait', 'urban'])
+  })
+
+  it('returns empty array for images without categories', () => {
+    const result = getGalleryCategories([{ id: '1' }, { id: '2' }])
+    expect(result).toEqual([])
+  })
+})
+
+describe('getGalleryTags', () => {
+  const mockImages = [
+    { id: '1', tags: ['sunset', 'beach'] },
+    { id: '2', tags: ['night', 'sunset'] },
+    { id: '3', tags: ['portrait'] },
+    { id: '4' },
+  ]
+
+  it('returns unique tags sorted alphabetically', () => {
+    const result = getGalleryTags(mockImages)
+    expect(result).toEqual(['beach', 'night', 'portrait', 'sunset'])
+  })
+
+  it('returns empty array for images without tags', () => {
+    const result = getGalleryTags([{ id: '1' }, { id: '2' }])
+    expect(result).toEqual([])
   })
 })
